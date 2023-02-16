@@ -84,6 +84,12 @@ function addColor(block) {
     return color;
 };
 
+function useColor(i) {
+    const color = addColor(block[i]);
+    blockColor[i] = `${color}`;
+    getGradient();
+};
+
 function getGradient() {
     let degOrCircle = "";
 
@@ -175,13 +181,13 @@ function dickoModeOnOff() {
         discoMode = true;
         btn[6].innerHTML = btnIconPause;
 
+        for (let i = 0; i < block.length; i++) {
+            setTimeout(() => useColor(i), i * 1000)
+        }
+
         const id = setInterval(() => {
             for (let i = 0; i < block.length; i++) {
-                setTimeout(() => {
-                    const color = addColor(block[i]);
-                    blockColor[i] = `${color}`;
-                    getGradient();
-                }, i * 1000)
+                setTimeout(() => useColor(i), i * 1000)
             }
         }, 3000);
 
@@ -194,15 +200,10 @@ function dickoModeOnOff() {
 
 };
 
-
     
-// Обраюотчики
+// Вешаем обработчики событий
 for (let i = 0; i < block.length; i++) {
-    block[i].addEventListener("click", () => {
-        const color = addColor(block[i]);
-        blockColor[i] = `${color}`;
-        getGradient();
-    })
+    block[i].addEventListener("click", () => useColor(i))
 };
 
 btn[0].addEventListener("click", () => {
